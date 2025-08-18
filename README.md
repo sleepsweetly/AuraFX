@@ -1,270 +1,216 @@
-# AuraFX — Mathematical Particle Effect Engine
+# AuraFX — Advanced Particle Effect Generator
 
-> **High-performance computational framework for procedural particle system generation with advanced mathematical modeling**
+> **3D/2D hybrid editor for creating dynamic particle effects with mathematical precision**
 
-**Developed by sleepsweety**
+AuraFX is a sophisticated web-based particle effect generator that combines 2D drawing capabilities with 3D visualization, specifically designed for generating MythicMobs YAML configurations. Built with modern web technologies and mathematical algorithms for optimal performance and accuracy.
 
-AuraFX is a sophisticated mathematical engine that combines computational geometry, linear algebra, and real-time graphics programming to generate procedural particle effects. The system implements advanced algorithms for 3D transformations, instanced rendering, and mathematical optimization with WebGL acceleration.
+## 🎯 Core Features
 
-## 🔬 Computational Core
+### 🎨 **Dual Editor System**
+- **2D Canvas Editor**: Fast point/shape-based particle placement with drawing tools
+- **3D Scene Editor**: Advanced vertex management with instanced rendering and transform controls
+- **Seamless Integration**: Bidirectional import/export between 2D and 3D workflows
 
-### **Dual-Space Mathematical Framework**
-- **2D Computational Plane**: Cartesian coordinate system with real-time mathematical transformations
-- **3D Euclidean Space**: Full 3D vector mathematics with quaternion-ready architecture
-- **Cross-Dimensional Projection**: Perspective-correct mapping with configurable field-of-view parameters
+### 📁 **Multi-Format Import System**
+- **PNG Processing**: Edge detection using Canny algorithm + Zhang-Suen skeletonization
+- **OBJ 3D Models**: Direct vertex extraction and conversion
+- **GIF Animation**: Frame-by-frame analysis with gifuct-js
+- **YAML Parsing**: Import existing MythicMobs configurations
 
-### **Advanced Import Algorithms**
-- **Computer Vision Pipeline**: Canny edge detection with Zhang-Suen morphological thinning
-- **Mesh Topology Analysis**: Vertex extraction with normal vector computation
-- **Temporal Frame Analysis**: GIF decomposition with statistical pixel sampling
-- **Configuration Parsing**: YAML AST processing with mathematical parameter extraction
+### ⚡ **Animation & Motion Modes**
+- **Global Rotation**: Orbital motion around center point
+- **Local Rotation**: Individual element self-rotation
+- **Directional Movement**: 8-direction movement with elevation control
+- **Dynamic Rainbow**: HSV→RGB color transitions with customizable periods
+- **Chain Animation**: Sequential pulse effects with configurable delays
 
-### **Multi-Modal Animation Engine**
-- **Orbital Mechanics**: Elliptical and circular trajectory computation
-- **Rotational Dynamics**: Local and global angular velocity applications
-- **Vector Field Motion**: 8-directional movement with elevation mapping
-- **Color Space Transformations**: HSV→RGB with perceptual uniformity
-- **Temporal Sequencing**: Phase-locked animation chains with mathematical precision
-
-### **Optimization Framework**
-- **Statistical Analysis**: Pattern recognition with variance-based circle detection
-- **Sampling Theory**: Grid-based, stochastic, and centroid sampling algorithms
-- **Computational Complexity Reduction**: O(n²) → O(n) optimizations
-- **GPU Acceleration**: Instanced rendering with compute shader potential
+### 🔧 **Advanced Tools**
+- **Performance Optimizer**: Line reduction, sampling, and interval optimization
+- **Transform Controls**: Batch rotation, scaling, and translation
+- **Selection Tools**: Box selection with occlusion detection
+- **LOD System**: Distance-based level-of-detail rendering
 
 ## 🧮 Mathematical Foundations
 
-### **Parametric Circle Generation**
+### **Circle Generation (2D)**
 ```
-For N points on radius r:
-θᵢ = 2πi/N  where i ∈ [0, N-1]
-x = r cos(θᵢ) + cₓ
-z = r sin(θᵢ) + cz
-y = cy (constant elevation)
+θᵢ = 2π·i/N
+x = r·cos(θᵢ), z = r·sin(θᵢ)
 ```
 
 ### **Fibonacci Sphere Distribution**
-Optimal sphere point distribution using golden ratio:
 ```
-φ = (1 + √5)/2 ≈ 1.618033988749  (Golden ratio)
-δ = 2π/φ² ≈ 2.399963229728   (Golden angle)
+φ = (1 + √5)/2  (Golden ratio)
+Δ = 2π/φ        (Incremental angle)
+t = i/N
+ι = arccos(1 − 2t)    (Inclination)
+α = Δ·i               (Azimuth)
 
-For point i of N total points:
-y = 1 - 2i/(N-1)
-r = √(1 - y²)
-θ = δ × i
-
-x = r cos(θ)
-z = r sin(θ)
+x = r·sin(ι)·cos(α)
+y = r·cos(ι)  
+z = r·sin(ι)·sin(α)
 ```
 
-### **Euler Rotation Matrices**
-Sequential XYZ rotation with precision preservation:
+### **Global Rotation Mode**
 ```
-Rₓ(α) = [1   0      0   ]
-        [0  cos(α) -sin(α)]
-        [0  sin(α)  cos(α)]
-
-Ry(β) = [ cos(β)  0  sin(β)]
-        [   0     1    0   ]
-        [-sin(β)  0  cos(β)]
-
-Rz(γ) = [cos(γ) -sin(γ)  0]
-        [sin(γ)  cos(γ)  0]
-        [  0       0     1]
-
-R = Rz(γ) × Ry(β) × Rₓ(α)
+θ(t) = 2π·t/Frames
+x' = Cx + r·cos(θ₀+θ)
+z' = Cz + r·sin(θ₀+θ)
 ```
 
-### **Orbital Mechanics Implementation**
+### **HSV to RGB Color Conversion**
+Dynamic rainbow implementation with period-based hue cycling:
 ```
-Global rotation around centroid C:
-r = √((x-Cₓ)² + (z-Cz)²)  (Orbital radius)
-θ₀ = atan2(z-Cz, x-Cₓ)    (Initial phase)
-ω = 2π/T                   (Angular frequency)
-
-x(t) = Cₓ + r cos(θ₀ + ωt)
-z(t) = Cz + r sin(θ₀ + ωt)
-y(t) = y₀ + f(t)          (Elevation function)
+hue(t) = (t/period) mod 1
 ```
 
-### **HSV→RGB Color Space Transformation**
-Mathematical color space conversion with chroma preservation:
+### **Perspective Projection (2D Preview)**
 ```
-Given HSV(h,s,v) where h∈[0,360°), s,v∈[0,1]:
-
-C = v × s           (Chroma)
-X = C × (1 - |((h/60°) mod 2) - 1|)
-m = v - C
-
-If h∈[0°,60°):   RGB = (C+m, X+m, m)
-If h∈[60°,120°): RGB = (X+m, C+m, m)
-If h∈[120°,180°): RGB = (m, C+m, X+m)
-If h∈[180°,240°): RGB = (m, X+m, C+m)
-If h∈[240°,300°): RGB = (X+m, m, C+m)
-If h∈[300°,360°): RGB = (C+m, m, X+m)
+s = fov/(fov + z₂)
+X = cx + s·x₁
+Y = cy + s·y₁
 ```
 
-### **Perspective Projection Mathematics**
-3D→2D transformation with depth-correct scaling:
-```
-Given point P(x,y,z) and camera parameters:
-d = focal_length / (focal_length + z)  (Depth factor)
-X_screen = center_x + d × x
-Y_screen = center_y + d × y
-```
+## 🏗️ Architecture Overview
 
-### **Statistical Circle Detection**
-Variance-based circular pattern recognition:
 ```
-Centroid: C = (x̄, z̄) = (∑xᵢ/N, ∑zᵢ/N)
-
-Radial distances: rᵢ = √((xᵢ-x̄)² + (zᵢ-z̄)²)
-Mean radius: r̄ = ∑rᵢ/N
-Variance: σ² = ∑(rᵢ-r̄)²/(N-1)
-
-Circle confidence: η = σ/r̄
-Threshold: η < 0.2 for circular classification
+┌─────────────┬─────────────┬─────────────┐
+│   UI Layer  │  State Mgmt │  Compute    │
+├─────────────┼─────────────┼─────────────┤
+│ Drawing     │ Zustand 2D  │ Web Workers │
+│ Modes       │ Zustand 3D  │ Transform   │
+│ Import      │ Map-based   │ Selection   │
+│ Code        │ Stores      │ Chain Anim  │
+└─────────────┴─────────────┴─────────────┘
 ```
 
-## ⚡ High-Performance Computing Architecture
+### **Technology Stack**
+- **Frontend**: Next.js 15, React 18, TypeScript 5
+- **3D Graphics**: Three.js, @react-three/fiber, @react-three/drei
+- **State Management**: Zustand with immer and subscribeWithSelector
+- **Styling**: TailwindCSS, shadcn/ui components
+- **Animations**: Framer Motion
+- **Processing**: OpenCV.js, gifuct-js, js-yaml
 
-### **WebGL Instanced Rendering Pipeline**
-- **Vertex Buffer Optimization**: Single geometry, multiple instance matrices
-- **Shader Uniform Management**: Batch uniform updates with state compression
-- **Draw Call Minimization**: N particles → 1 draw call via instancing
-- **Memory Layout Optimization**: Interleaved vertex attributes for cache efficiency
+## ⚡ Performance Optimizations
 
-### **Parallel Computing with Web Workers**
-- **Selection Algorithm**: Spatial partitioning for O(log n) box queries
-- **Transform Pipeline**: Vectorized matrix operations with SIMD potential
-- **Animation Processing**: Temporal interpolation with phase coherence
+### **GPU-Accelerated Rendering**
+- **Instanced Rendering**: Thousands of particles in single draw call
+- **LOD System**: Distance-based detail reduction
+- **Batch Operations**: Non-blocking UI updates
 
-### **GPU-Accelerated Transformations**
-```
-Matrix multiplication optimization:
-For rotation θ around Y-axis:
-cos_θ = cos(θ)  // Precompute
-sin_θ = sin(θ)
+### **Web Worker Integration**
+- **Selection Worker**: Box selection calculations
+- **Transform Worker**: Bulk rotation/scaling operations  
+- **Chain Animation Worker**: Sequential timing calculations
 
-For each vertex (x,z):
-x' = x × cos_θ - z × sin_θ
-z' = x × sin_θ + z × cos_θ
-```
+### **Smart Code Generation**
+- **Circle Detection**: Multi-point → single `particlering` command
+- **Sampling Algorithms**: Grid/step/random/center-based reduction
+- **Interval Optimization**: Automatic timing adjustments
 
-### **Level-of-Detail (LOD) System**
-Distance-based computational complexity scaling:
-```
-LOD_level = floor(distance / LOD_threshold)
-vertex_density = base_density / (2^LOD_level)
-render_quality = max(0.1, 1.0 / (1.0 + LOD_level))
-```
+## 🔄 Data Flow
 
-## 🔬 Advanced Mathematical Algorithms
-
-### **Zhang-Suen Morphological Thinning**
-Iterative skeleton extraction with topology preservation:
-```
-Two-phase algorithm:
-Phase 1: Remove pixels satisfying:
-- 2 ≤ N(P₁) ≤ 6  (neighbor count)
-- S(P₁) = 1       (connectivity number)
-- P₂×P₄×P₆ = 0    (corner constraints)
-- P₄×P₆×P₈ = 0
-
-Phase 2: Similar with rotated constraints
-Iterate until convergence
+```mermaid
+graph TD
+    A[UI Interaction] --> B[Store Updates]
+    B --> C{Heavy Computation?}
+    C -->|Yes| D[Web Worker]
+    C -->|No| E[Direct Processing]
+    D --> B
+    E --> B
+    B --> F[Code Generation]
+    F --> G[YAML Output]
+    G --> H[Optimization]
+    H --> F
 ```
 
-### **Canny Edge Detection Pipeline**
-Multi-stage edge enhancement:
-```
-1. Gaussian smoothing: G(x,y) = (1/2πσ²)e^(-(x²+y²)/2σ²)
-2. Gradient calculation: |∇I| = √(Gₓ² + Gy²)
-3. Non-maximum suppression with angular interpolation
-4. Hysteresis thresholding: T_low < edge < T_high
-```
+## 🎛️ Key Components
 
-### **Chain Animation Phase Calculation**
-Temporal sequencing with mathematical precision:
-```
-For element i with delay dᵢ:
-φᵢ(t) = (t - dᵢ) mod (2T)    (Phase function)
-intensity = 0.5(sin(πφᵢ/T) + 1)  ∈ [0,1]
-alpha = intensity × base_alpha
-```
+### **2D Canvas Editor**
+- Real-time drawing with circle/line/freehand tools
+- Selection and transformation capabilities
+- 3D preview with perspective projection
+- Layer-based organization
 
-### **Spatial Grid Sampling**
-Deterministic point reduction maintaining spatial distribution:
-```
-Grid cell size: Δ = target_spacing
-Cell coordinates: (i,j) = (⌊x/Δ⌋, ⌊z/Δ⌋)
-Representative point: argmin{distance to cell center}
-Sampling ratio: R = selected_points / total_points
-```
+### **3D Scene Editor**
+- Instanced mesh rendering for performance
+- Transform controls with gizmos
+- Selection box with occlusion detection
+- Camera controls with zoom/pan/orbit
 
-## 🏗️ Computational Architecture
+### **Import System**
+- **PNG**: Edge detection → skeleton → sampling
+- **GIF**: Frame extraction → pixel analysis → temporal sampling
+- **OBJ**: Vertex parsing → coordinate transformation
+- **YAML**: Configuration parsing → element reconstruction
 
-### **Memory Management Strategy**
-- **Map-Based Vertex Storage**: O(1) access with UUID indexing
-- **Batch Processing**: RequestIdleCallback for non-blocking operations
-- **Immutable State Trees**: Structural sharing with Immer integration
-- **Garbage Collection Optimization**: Object pooling for temporary calculations
+### **Code Generator**
+- Multi-mode animation support
+- Mathematical formula implementation
+- Automatic optimization detection
+- MythicMobs-compatible output
 
-### **Multi-Threaded Computation Model**
+## 🔬 Advanced Features
+
+### **Circle Optimization**
+Automatic detection of circular patterns:
 ```
-Main Thread:    UI → State Management → Render Commands
-Worker Thread:  Heavy Math → Batch Results → State Updates
-GPU Thread:     Vertex Processing → Fragment Shading → Framebuffer
+Center: (x̄, z̄) = average position
+Radius: r ≈ average(√((x-x̄)² + (z-z̄)²))
+Validation: rσ < 0.2·r (standard deviation threshold)
 ```
 
-### **State Synchronization Protocol**
-- **2D↔3D Coordinate Transformation**: Automatic projection mapping
-- **Cross-Store Event Propagation**: Reactive updates with dependency graphs
-- **Temporal Consistency**: Frame-locked state updates
-- **Conflict Resolution**: Last-write-wins with operation timestamps
-
-## 🎯 Mathematical Precision & Accuracy
-
-### **Floating-Point Considerations**
-- **IEEE 754 Double Precision**: 15-16 decimal digits accuracy
-- **Numerical Stability**: Kahan summation for large accumulations
-- **Trigonometric Precision**: Range reduction for large angle inputs
-- **Matrix Orthogonality**: Gram-Schmidt reorthogonalization
-
-### **Error Analysis & Mitigation**
+### **Chain Animation**
+Sequential pulse effects with phase calculation:
 ```
-Accumulation error bounds:
-ε_total ≤ n × ε_machine × condition_number
-
-Where:
-n = operation count
-ε_machine ≈ 2.22 × 10⁻¹⁶  (double precision)
-condition_number = problem-dependent scaling factor
+φ = (t − delayᵢ) mod (2·T)
+I = 0.5·(sin(π·φ/T) + 1)  (0..1 normalization)
 ```
 
-### **Optimization Complexity Analysis**
-- **Circle Detection**: O(n) single-pass algorithm
-- **Grid Sampling**: O(n log n) with spatial indexing
-- **Transform Operations**: O(n) vectorized processing
-- **Selection Queries**: O(log n) with spatial partitioning
+### **Euler Transformations**
+X→Y→Z rotation sequence:
+```
+X-axis: y' = y·cosx − z·sinx, z' = y·sinx + z·cosx
+Y-axis: x'' = x'·cosy + z'·siny, z'' = −x'·siny + z'·cosy  
+Z-axis: x''' = x''·cosz − y''·sinz, y''' = x''·sinz + y''·cosz
+```
 
-## 🚀 Performance Characteristics
+## 🎨 User Experience
 
-### **Computational Benchmarks**
-- **Vertex Processing**: >100K points at 60fps with instanced rendering
-- **Animation Generation**: <16ms for complex multi-modal effects
-- **Import Processing**: Real-time for images up to 4K resolution
-- **Code Generation**: Sub-second YAML output for large datasets
+- **Modern UI**: shadcn/ui components with Tailwind styling
+- **Responsive Design**: Works across desktop and tablet devices
+- **Real-time Preview**: Live 2D/3D visualization during editing
+- **Performance Monitoring**: Automatic performance mode suggestions
+- **Export Options**: Direct YAML download with optimization
 
-### **Memory Footprint Optimization**
-- **Vertex Data**: 32 bytes per point (position + metadata)
-- **Animation State**: Compressed temporal parameters
-- **Texture Memory**: Automatic mipmap generation for distance rendering
-- **Worker Communication**: Transferable objects for zero-copy operations
+## 🧰 Development Architecture
+
+### **Store Management**
+- **Map-based Vertex Storage**: O(1) access for large datasets
+- **Batch Updates**: Non-blocking UI with requestIdleCallback
+- **History System**: Undo/redo functionality
+- **Cross-store Synchronization**: 2D ↔ 3D data flow
+
+### **Worker Integration**
+- **Selection Worker**: `selectionWorker.ts` - Box selection calculations
+- **Transform Worker**: `transform-worker.ts` - Bulk transformations
+- **Chain Worker**: `chainAnimationWorker.ts` - Animation timing
+
+### **Optimization Pipeline**
+- **Element Sampling**: Grid/step/random/center algorithms
+- **Line Reduction**: Similar effect merging
+- **Interval Scaling**: Automatic timing optimization
+- **Primitive Detection**: Circle/line pattern recognition
+
+## 📊 Mathematical Accuracy
+
+All calculations use double-precision floating-point arithmetic with:
+- **Trigonometric Functions**: Native Math.cos/sin for rotation calculations
+- **Color Space Conversion**: Sector-based HSV→RGB transformation
+- **Projection Mathematics**: Perspective-correct 3D→2D mapping
+- **Statistical Analysis**: Mean/variance calculations for pattern detection
 
 ---
 
-**Engineered with mathematical rigor. Optimized for computational efficiency. Built for advanced particle system generation.**
-
-*AuraFX represents the convergence of computational mathematics, computer graphics, and real-time performance optimization in a unified particle effect generation framework.*
+**Built with precision. Optimized for performance. Designed for creators.**
